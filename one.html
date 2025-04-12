@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>75 Target</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #667eea;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #667eea;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5a67d8;
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+.result-message {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  background-color: #f1f1f1;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  /* Hide by default; you can toggle it with JS */
+}
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>75 Target</h2>
+    <form>
+      <label for="name">Delivered</label>
+      <input type="text" id="TC" name="name" placeholder="..." required />
+
+      <label for="email">Attended</label>
+      <input type="text" id="n1" name="email" placeholder="..." required />
+
+      <button type="submit">Check</button>
+    </form>
+  </div>
+<script>
+    let danger
+    const d = document
+
+    let body = d.querySelector("div")
+
+
+
+    function printres(text){
+      let a = d.createElement("p")
+        a.setAttribute("class", "result-message")
+        a.setAttribute("id", "result")
+        if(danger == 100){
+            a.style.backgroundColor = "#4dff4d"
+        }else if(danger == 75){
+             a.style.backgroundColor = "#b3e04d"
+        }else if(danger == 60){
+             a.style.backgroundColor = "#ff944d"
+        }else if (danger == 40){
+            a.style.backgroundColor = "#ff4d4d"
+        }
+
+
+        a.appendChild(d.createTextNode(`${text}`))
+        let ch = d.getElementById("result");
+        if(ch == null){
+         d.querySelector("div").appendChild(a)
+        }else{
+            ch.replaceWith(a)
+        }
+    }
+
+    let form = d.querySelector("form")
+    form.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        
+        const n1 = parseInt(d.querySelector("#n1").value)
+        const TC = parseInt(d.querySelector("#TC").value)
+
+
+
+        let class75 = (n1 / TC) * 100;
+
+        if (class75 < 75)
+        {
+            let it;
+            it = Math.ceil(((0.75 * TC) - n1) / 0.25);
+            console.log(`You need to attend ${it} Lecture to get 75%`);
+            if(((n1/TC)*100)<60){
+                danger = 40
+            }else{
+                danger = 60
+            }
+            printres(`You need to attend ${it} Lecture to get 75%`)
+          
+        }
+        else if (class75 > 76)
+        {
+            let it;
+            it = Math.floor((n1 - (0.75 * TC)) / 0.75);
+            console.log(`You can miss ${it} Lecture`)
+            danger = 100
+            printres(`You can miss ${it} Lecture`)
+            
+
+        }
+        else
+        {
+            let it;
+            it = Math.ceil(((0.75 * (TC + 1)) - n1) / 0.25);
+            console.log(`You need to attend ${ Math.abs(it) } Lecture to Miss 1`)
+            danger = 75
+            printres(`You need to attend ${ Math.abs(it) } Lecture to Miss 1`)
+          
+        }
+    })
+
+</script>
+</body>
+</html>
